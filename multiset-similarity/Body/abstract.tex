@@ -1,0 +1,12 @@
+\begin{abstract}
+Due to their popularity, stream processing algorithms have attracted a lot of attention from the research community over the last few years.
+Due to the large amount of data streams and the speed at which it is generated, these algorithms typically produce an approximate answer since the amount of processing time per item and the memory used are both constrained.
+Prior art often focuses on one specific characteristic of the data stream, such as frequency, persistency, and cardinality.
+In practice, users often wish to analyze multiple characteristics of the items. In other words, users often wish to find items prominent in multiple characteristics.
+In this paper, we focus on finding items prominent in terms of three characteristics: frequency, persistency, and recency.
+We propose a new data structure -- the \sketchname{}, which can record these three characteristics of items.
+The \sketchname{} can be used to find prominent items, whose frequency, persistency, and recency are larger than corresponding predefined thresholds at the same time.
+To the best of our knowledge, no prior work can estimate the persistency and the recency of every item in data streams.
+\end{abstract}
+
+

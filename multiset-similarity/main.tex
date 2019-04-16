@@ -1,0 +1,201 @@
+%\documentclass[11pt, onecolumn]{article}
+%\IEEEoverridecommandlockouts
+%\documentclass[sigconf, screen = true, 11pt]{acmart}
+\documentclass{vldb}
+%\settopmatter{printacmref=false} % Removes citation information below abstract
+%\renewcommand\footnotetextcopyrightpermission[1]{} % removes footnote with conference information in first column
+\pagestyle{plain} % removes running headers
+% % % % % % % % % % package starts...% % % % % % % % % % % % % % % % % % % % %
+%\usepackage{setspace}
+%    \singlespacing
+    \usepackage{indentfirst}
+	\usepackage{graphicx} 
+	\usepackage{balance}
+	\usepackage{amssymb, amsmath}
+%	\usepackage[thmmarks, amsmath, thref, amsthm]{ntheorem}%
+%	\usepackage{amsfonts}
+%	\let\proof\relax
+%	\let\endproof\relax
+%	\usepackage{amsthm}
+%	\renewcommand{\proofname}{\bf Proof}
+%    \newtheorem{theorem}{Theorem}   % vldb
+%    \newtheorem{definition}{Definition}
+%    \newtheorem{problem}{Problem}
+%    \newtheorem{lemma}{Lemma}
+    \usepackage{mathtools} % vldb
+	
+	\usepackage{multirow, rotating, wasysym, url}
+	\usepackage[tight]{subfigure}
+	%\usepackage[retainorgcmds]{InputFiles/IEEEtrantools}
+	\usepackage[ruled,linesnumbered,vlined]{algorithm2e}
+	\usepackage{hyperref} %reference hyper links.
+	\usepackage{color}
+	\usepackage{soul}
+	\usepackage{bbm}
+%	\usepackage{caption2}
+	\usepackage[margin=0.05in]{caption}
+	\usepackage{enumerate}
+	\usepackage{framed}
+	\usepackage{lipsum}
+	\usepackage[normalem]{ulem}
+	
+	\usepackage{verbatim}
+%	\captionsetup{size=footnotesize,
+		%justification=centering, %% not needed
+%		skip=5pt, position = bottom}
+% % % % % % % % % % package ends...% % % % % % % % % % % % % % % % % % % % % %
+\makeatletter
+ \let\@copyrightspace\relax
+\makeatother
+
+
+\graphicspath{{./DrawingFigures/},{./EvaluateFigures/}, {./GraphPPT/}} 
+
+% % % % % % % % % % New command starts...% % % % % % % % % % % % % % % % % % %
+	\newcommand{\presec}{\vspace{-0.04in}}
+	\newcommand{\postsec}{\vspace{-0.04in}}
+	
+	\newcommand{\presub}{\vspace{-0.04in}}
+	\newcommand{\postsub}{\vspace{-0.04in}}
+	\newcommand{\vvv}{\vspace{-0.03in}}
+	\newcommand{\uuu}{\vspace{0.02in}}
+	
+	\newcommand{\pretablecaption}{\vspace{-0.0in}}
+	\newcommand{\posttablecaption}{\vspace{-0.0in}}
+	
+	\newcommand{\prefig}{\vspace{-0.0in}}
+	\newcommand{\postfig}{\vspace{-0.0in}}
+	
+	\newcommand{\prefigcaption}{\vspace{-0.0in}}
+	\newcommand{\postfigcaption}{\vspace{-0.0in}}
+	
+	\newcommand{\adjustfigs}{\vspace{-0.0in}}
+	\graphicspath{{./EvaluateFigures/}, {./GraphPPT/}, {./DrawingFigures/}}
+	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Only for Appendix
+	\newcommand{\presecapp}{\vspace{-0.00in}}
+	\newcommand{\postsecapp}{\vspace{-0.00in}}
+	    
+	\newcommand{\prefigapp}{\vspace{-0.0in}}
+	\newcommand{\postfigapp}{\vspace{-0.0in}}
+	
+	\newcommand{\presubapp}{\vspace{-0.00in}}
+	\newcommand{\postsubapp}{\vspace{-0.00in}}
+	
+	\newcommand{\prefigcaptionapp}{\vspace{-0.0in}}
+	\newcommand{\postfigcaptionapp}{\vspace{-0.0in}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\newcommand{\ie}{\textit{i.e.}}
+	\newcommand{\eg}{\textit{e.g.}}
+	\newcommand{\etal}{\textit{et al.}}
+	\newcommand{\etc}{\textit{etc}}
+	
+	
+	\newcommand{\subfigs}{\hspace{-0in}}
+	\newcommand{\subfigsvert}{\vspace{-0in}}
+	\newcommand{\preequation}{\vspace{-0in}}
+	\newcommand{\postequation}{\vspace{-0in}}
+	\newcommand{\pretheorem}{\vspace{-0in}}
+	\newcommand{\posttheorem}{\vspace{-0in}}
+	
+		\newcommand{\Proc}{Proc. }
+		\newcommand{\Conf}{Conf. }
+		\newcommand{\Inte}{Int. }
+	\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+	
+	\newcommand{\para}{\vspace{0.03in}\noindent\textbf}
+	
+	\newcommand{\figwidthdraw}{0.45\textwidth}
+	\newcommand{\figwidtheva}{0.4\textwidth}
+	
+	\newcommand{\bm}[1]{\mbox{\boldmath{$#1$}}}
+	
+	\definecolor{lbq}{RGB}{0,166,0}
+	\definecolor{reder}{RGB}{255,0,0}
+
+	\definecolor{zyd}{RGB}{0,0,255}
+	\definecolor{gray}{rgb}{0.6,0.6,0.6}
+	\definecolor{shadecolor}{rgb}{0.92,0.92,0.92}
+%	\definecolor{jj}{HTML}{01A2FF}
+% Define color used for revision
+%    \definecolor{reviewA}{HTML}{0000FF}
+%   \definecolor{reviewB}{HTML}{FF0000}
+%    \definecolor{reviewC}{HTML}{FF00FF}
+%	\definecolor{reviewD}{HTML}{00CC00}
+
+	
+	\newcommand{\ppp}{\noindent\textbf}
+	\newcommand{\zyd}{\textcolor{zyd}}
+	\newcommand{\yt}{\textcolor{lbq}}
+
+    \newcommand{\sketchname}{Windows sketch}	
+	\newcommand{\aname}{Windows sketch}
+	\newcommand{\bname}{WMO}
+	
+	\clubpenalty=10000
+	\widowpenalty = 10000
+% % % % % % % % % % New command ends...% % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % Backup starts... % % % % % % % % % % % % % % % % % % % % %  
+	%\clubpenalty=10000
+	%\widowpenalty = 10000
+	%\usepackage{caption2} %fo setlength
+	%\setlength{\parskip}{0.1\baselineskip}
+	%\setlength{\abovecaptionskip}{-1pt}
+	%\vfill\eject % force going to next page
+% % % % % % % % % % Backup ends... % % % % % % % % % % % % % % % % % % % % % %
+%	
+
+% DOI
+%\acmDOI{10.475/123_4}
+
+% ISBN
+%\acmISBN{123-4567-24-567/08/06}
+
+%Conference
+%\acmConference[SIGMOD'18]{}{June 10 - 15, 2018}{Houston, TX, USA} 
+%\acmYear{1997}
+%\copyrightyear{2016}
+
+%\acmPrice{15.00}
+
+%\usepackage[margin=1in]{geometry}
+%\usepackage{authblk}
+
+\vldbTitle{A Sample Proceedings of the VLDB Endowment Paper in LaTeX Format}
+\vldbAuthors{Ben Trovato, G. K. M. Tobin, Lars Th{\sf{\o}}rv{$\ddot{\mbox{a}}$}ld, Lawrence P. Leipuner, Sean Fogarty, Charles Palmer, John Smith, Julius P.~Kumquat, and Ahmet Sacan}
+\vldbDOI{https://doi.org/10.14778/xxxxxxx.xxxxxxx}
+\vldbVolume{12}
+\vldbNumber{xxx}
+\vldbYear{2019}
+
+
+\begin{document}
+
+\title{Multiset Similarity}
+
+\author{
+%Yinda Zhang$^1$, Jinyang Li$^1$, Yutian Lei$^2$, Tong Yang$^1$, Zhetao Li$^2$, Gong Zhang$^3$, Bin Cui$^1$\\
+%$^1$Department of Computer Science, Peking University\\ $^2$Xiangtan University, $^3$Huawei Future Network Theory Lab\\
+%\{hgdkgszyd,lijinyang,yang.tong,bin.cui\}@pku.edu.cn,
+%\{leiyutianchina,liztchina\}@hotmail.com, nicholas.zhang@huawei.com
+}
+%\date{}
+
+\maketitle
+	\input{multiset-similarity/Body/abstract.tex}
+	\input{multiset-similarity/Body/introduction.tex}
+	\input{multiset-similarity/Body/algorithm.tex}
+	\input{multiset-similarity/Body/conclusion.tex}
+
+    \clearpage	
+	\vfill\eject
+	{\scriptsize
+	\bibliographystyle{unsrt}
+	\bibliographystyle{abbrv}
+	\bibliography{InputFiles/reference}	
+	}
+
+	
+
+\end{document} 

@@ -1,0 +1,99 @@
+\presec
+\section{Related Work} \postsec
+\label{sec:relate}
+A large body of literature on sketch-based algorithms has focused on summarizing the frequency of each item in the data stream, or finding top-$k$ frequent items.
+However, to the best of our knowledge, there is no prior work that can summarize the persistence of each items, only some works on finding persistent items. 
+Therefore, in this section, we briefly describe the prior sketch-based algorithms and the prior work on finding persistent items.
+
+
+\presub
+\subsection{Sketch-based Algorithms}
+\postsub
+\label{subsec:relae:sketch}
+A sketch refers to a simple random sample of stream items or a projection of random vectors.
+Sketch-based algorithms uses sketches to record items' frequencies, which is both time and memory efficient.
+Typical works include Count sketch\cite{countsketch}, Count-Min (CM) sketch\cite{cmsketch} and Count-Min sketch with Conservative Update (CU)\cite{cusketch}, \etc.
+The data structure of the above three sketches is the same. 
+They all consist of a two-dimensional array of counters.
+When an item arrives, they first use a hash function to map an item to a counter in each array.
+For each incoming item, Count sketch either increments or decrements the mapped counter in each array by 1, decided by another hash function.
+Different from Count sketch, CM sketch increments the mapped counter of each array by 1.
+With the technique of conservative update, CU sketch improves accuracy by only incrementing the minimum counters by 1.
+To estimate an item's frequency, Count sketch reports the median of all mapped counters, while CM sketch and CU sketch both report the minimum value of all mapped counters.
+
+It is difficult to use sketch-based algorithms which focus on frequency to estimate persistence, because they can not avoid the error caused by repeated occurrences of an item within a time window.
+For example, in a CM sketch, if a particular item has occurred twice in the current time window, there is no information signaling its re-occurrence.
+Invertible Bloom Filter (IBF) \cite{IBF}, a variant of Bloom filter for key-value pairs, aims to list all key-value pairs it contains.
+It can be further adapted for finding persistent items, which is introduced in \cite{pie}.
+An IBF maintains an array consisting of a number of cells, and each cell consists of three fields: count, keySum, and valueSum.
+For an incoming key-value pair, IBF maps it to $k$ cells by hashing.
+For each of these cells, IBF increment its count field by 1, XORs the keySum field with the pair's key and XORs the valueSum with the pair's value.
+In order to list all key-value pairs, IBF finds cells with count fields equal to 1 or -1, gets pairs in these cells and deletes these pairs in other mapped cells so as to get more cells whose count fields are either 1 or -1.
+IBF can be used to find persistent items by creating one IBF for each time window to record incoming items and adding a Bloom filter to filter repeated items.
+However, such an adaptation is highly memory consuming since it stores every item's ID during each time window.
+
+
+
+
+
+\presub
+\subsection{Finding Persistent Items}
+\postsub
+\label{subsec:relate:persis}
+
+Prior art on persistence often focus on finding persistent items, such as  Small-Space\cite{smallspace}, PIE\cite{pie} and its variances\cite{DISPERSE}.
+These works can report persistent items, but cannot estimate persistences of all items.
+Here we briefly introduce two works.
+
+
+\ppp{Small-Space:}
+The key idea of Small-Space is "sample and count". 
+It maintains a data structure $\mathbb{S}$ to track occurrences of some items, in which information of an item $e$ is stored as a tuple $(e, n_e, t_e)$, where $n_e$ is the number of time windows where $e$ has occurred, and $t_e$ is the most recent time window where $e$ has occurred.
+For each incoming item $e$, if it is already tracked by $\mathbb{S}$, Small-Space updates the corresponding tuple.
+Otherwise, Small-Space samples it using a hash function $h(e, t_{cur})$, where $t_{cur}$ is the current time window, and starts tracking $e$ if $h(e, t_{cur})$ is less than a predefined threshold.
+By sampling based on both the item and the time window, Small-Space avoids giving higher sampling probability to items who occurs multiple times in one time window.
+Besides, duplicate items in one time window will not lead to duplicate counting due to the use of tuples.
+Small-Space can identify persistent items, however, it can estimate an item's persistence only if it is tracked by Small-Space.
+For items that are not tracked, Small-Space can not estimate its persistence.
+In order to lower false negative rate, the sampling rate cannot be too small, which means the number of tracked items can be much larger than the number of persistent items. 
+For each tracked item, Small-Space stores its original identifier in the tuple, which is space consuming.
+
+
+
+
+%Its sampling is done by a hash function which is based on the ID and the arrival timeslot of items. 
+%Then it uses a hash-table to keep all the sampled items and their persistence. 
+%Sampling reduces the space needed by hash-table. 
+%However, the sample rate of Small-Space is often high to ensure its accuracy. 
+%Therefore, Small-Space still needs a large memory.  
+
+
+\ppp{PIE:}
+PIE proposes the Space-Time Bloom filter (STBF) and uses Raptor codes\cite{raptorcode} to find the persistent items.
+%PIE finds persistent items with two phases: recording phase and identification phase.
+First PIE records information of the data stream.
+In each time window, PIE creates one STBF which consists of a number of cells, and each cell consists of three fields: flag, Raptor code and fingerprint.
+For an item $e$, PIE maps it to $k$ cells in the STBF by computing $k$ hash functions.
+For each of these $k$ cells, if it is empty, PIE inserts $e$ into it.
+PIE computes $e$'s fingerprint $\mathbb{F}_e$ and Raptor code $\gamma$, and sets the cell to $<true, \gamma, \mathbb{F}_e>$.
+If the cell is not empty and its fingerprint is equal to $\mathbb{F}_e$, PIE does nothing.
+If the cell is not empty and the fingerprint is not equal to $\mathbb{F}_e$, PIE sets its flag to false, which means a hash collision happens here and the cell is useless.
+Second, PIE decodes to find persistent items by searching all cells in all STBFs.
+An item $e$ can be successfully decoded if only if there are enough Raptor codes of $e$, \ie, there are enough fingerprints stored equal to $\mathbb{F}_e$.
+Since a non-persistent item has very few Raptor codes, it can hardly be decoded.
+Thus, PIE reports all successfully decoded items as persistent items.
+PIE uses fingerprints to avoid recording duplicate items in one time window, and uses the property of Raptor codes to identify persistent items effectively.
+However, it needs to keep one STBF for each time window, which is not space efficient.
+In addition, since the real data stream is highly skewed \cite{asketch, sketchsurvey, zipf, powerlaw}, most items occur too infrequently to become persistent items.
+Such items are mapped to many cells and are likely to collide with other items, making cells invalid and reducing the number of items decoded.
+
+%In each time window, PIE uses Raptor codes to encode the ID of each item and stores the encoded ID in the corresponding Space-Time Bloom filter.
+%Finally, it decodes persistent items by the encoded ID in all Space-Time Bloom filter.
+%Raptor codes can efficiently store information.
+%However, PIE has to keep one Space-Time Bloom filter for each time window, which makes PIE take up much memory.
+
+
+%\presub
+%\subsection{Other sketches}
+%\postsub
+%\label{subsec:relate:other}
